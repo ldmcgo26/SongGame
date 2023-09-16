@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors"
 import querystring from "querystring";
 import axios from "axios";
 
@@ -7,13 +8,10 @@ const clientSecret = "455e56d5bb684e04bbb4e9d040dd12ed";
 const redirectUri = "http://localhost:3000/callback";
 
 const app = express();
+app.use(cors)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
-});
-
-app.get("/home", (req, res) => {
-  res.send("Home");
 });
 
 app.get("/login", (req, res) => {
@@ -74,33 +72,32 @@ app.get("/callback", (req, res) => {
         console.log("Expires In:", expires_in);
 
         // You can choose to redirect the user or perform other actions here
-        // The Spotify API endpoint for starting playback
-        const playEndpoint = "https://api.spotify.com/v1/me/player/play";
+        // // The Spotify API endpoint for starting playback
+        // const playEndpoint = "https://api.spotify.com/v1/me/player/play";
 
-        // The Spotify URI of the song or track you want to play
-        const trackUri = "spotify:track:7GhIk7Il098yCjg4BQjzvb"; // Replace with the URI of the song you want to play
+        // // The Spotify URI of the song or track you want to play
+        // const trackUri = "spotify:track:7GhIk7Il098yCjg4BQjzvb"; // Replace with the URI of the song you want to play
 
-        // Create the request payload
-        const requestData = {
-          uris: [trackUri],
-        };
+        // // Create the request payload
+        // const requestData = {
+        //   uris: [trackUri],
+        // };
 
-        // Set up the headers with the access token
-        const headers = {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        };
+        // // Set up the headers with the access token
+        // const headers = {
+        //   Authorization: `Bearer ${access_token}`,
+        //   "Content-Type": "application/json",
+        // };
 
-        // Make a POST request to start playback
-        axios
-          .put(playEndpoint, requestData, { headers })
-          .then((response) => {
-            console.log("Playback started:", response.data);
-          })
-          .catch((error) => {
-            console.error("Error starting playback:", error);
-          });
-        res.redirect("/home");
+        // // Make a POST request to start playback
+        // axios
+        //   .put(playEndpoint, requestData, { headers })
+        //   .then((response) => {
+        //     console.log("Playback started:", response.data);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error starting playback:", error);
+        //   });
       })
       .catch((error) => {
         // Handle any errors that occur during the request
