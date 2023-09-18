@@ -2,33 +2,21 @@ import express from "express";
 import cors from "cors"
 import querystring from "querystring";
 import axios from "axios";
+import router from "./routes/auth"
 
 const clientId = "179e2166da3644e5a6cafb1cb561ffd6";
 const clientSecret = "455e56d5bb684e04bbb4e9d040dd12ed";
 const redirectUri = "http://localhost:3000/callback";
 
 const app = express();
-app.use(cors)
+
+app.use(cors())
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/login", (req, res) => {
-  const state = (Math.random().toString(36) + "00000000000000000").slice(2, 18);
-  const scope = "user-read-private user-read-email user-modify-playback-state";
-
-  res.redirect(
-    "https://accounts.spotify.com/authorize?" +
-      querystring.stringify({
-        response_type: "code",
-        client_id: clientId,
-        scope: scope,
-        redirect_uri: redirectUri,
-        state: state,
-      }),
-  );
-});
+app.use("/auth", router)
 
 app.get("/callback", (req, res) => {
   const code = req.query.code || null;
@@ -70,6 +58,8 @@ app.get("/callback", (req, res) => {
         console.log("Refresh Token:", refresh_token);
         console.log("Token Type:", token_type);
         console.log("Expires In:", expires_in);
+
+        localStorage.setItem('accessToken', access_token)
 
         // You can choose to redirect the user or perform other actions here
         // // The Spotify API endpoint for starting playback
