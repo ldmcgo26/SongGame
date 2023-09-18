@@ -1,33 +1,15 @@
-import React, { useState } from 'react';
-import axios from "./api"
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    axios.get('/login')
-      .then((response) => {
-        setIsLoggedIn(true)
-      })
-      .catch((error) => {
-        console.error("Error logging in", error)
-      });
-  };
-
+export default function App() {
   return (
-    <div className='flex justify-center'>
-      {!isLoggedIn ? (
-        <div>
-          <h1>Login Page</h1>
-          <button onClick={handleLogin}>Login</button>
-        </div>
-      ) : (
-        <div>
-          <h1>Home Page</h1>
-        </div>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
