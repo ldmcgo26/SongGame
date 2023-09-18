@@ -1,24 +1,16 @@
 import express from "express";
-import cors from "cors"
 import querystring from "querystring";
 import axios from "axios";
-import router from "./routes/auth"
+import dotenv from "dotenv";
 
-const clientId = "179e2166da3644e5a6cafb1cb561ffd6";
-const clientSecret = "455e56d5bb684e04bbb4e9d040dd12ed";
-const redirectUri = "http://localhost:3000/callback";
+dotenv.config();
 
-const app = express();
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
-app.use(cors())
+const callbackRouter = express.Router();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.use("/auth", router)
-
-app.get("/callback", (req, res) => {
+callbackRouter.get("/callback", (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -59,7 +51,7 @@ app.get("/callback", (req, res) => {
         console.log("Token Type:", token_type);
         console.log("Expires In:", expires_in);
 
-        localStorage.setItem('accessToken', access_token)
+        res.send(access_token);
 
         // You can choose to redirect the user or perform other actions here
         // // The Spotify API endpoint for starting playback
@@ -100,6 +92,4 @@ app.get("/callback", (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("App listening at port 3000");
-});
+export default callbackRouter;
