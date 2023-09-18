@@ -7,7 +7,6 @@ function App() {
   const handleLogin = () => {
     axios.get('/login')
       .then((response) => {
-        console.log("HI")
         setIsLoggedIn(true)
       })
       .catch((error) => {
@@ -16,7 +15,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className='flex justify-center'>
       {!isLoggedIn ? (
         <div>
           <h1>Login Page</h1>
@@ -25,7 +24,6 @@ function App() {
       ) : (
         <div>
           <h1>Home Page</h1>
-          
         </div>
       )}
     </div>
