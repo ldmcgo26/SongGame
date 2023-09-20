@@ -7,10 +7,12 @@ dotenv.config();
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
+const redirectUri = process.env.REDIRECT_URI;
+const frontend_uri = process.env.FRONTEND_URI;
 
-const callbackRouter = express.Router();
+const router = express.Router();
 
-callbackRouter.get("/callback", (req, res) => {
+router.get("/", (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -31,7 +33,7 @@ callbackRouter.get("/callback", (req, res) => {
         grant_type: "authorization_code",
       }),
       headers: {
-        Authorization:
+        "Authorization":
           "Basic " +
           new Buffer.from(clientId + ":" + clientSecret).toString("base64"),
         "Content-Type": "application/x-www-form-urlencoded",
@@ -51,7 +53,9 @@ callbackRouter.get("/callback", (req, res) => {
         console.log("Token Type:", token_type);
         console.log("Expires In:", expires_in);
 
-        res.send(access_token);
+        req.session.access_token = access_token;
+
+        res.redirect(frontend_uri);
 
         // You can choose to redirect the user or perform other actions here
         // // The Spotify API endpoint for starting playback
@@ -92,4 +96,4 @@ callbackRouter.get("/callback", (req, res) => {
   }
 });
 
-export default callbackRouter;
+export default router;

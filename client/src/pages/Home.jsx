@@ -4,10 +4,12 @@ import { useEffect } from "react";
 export default function Home() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      navigate("/login");
+  useEffect(() => {   
+    const access_token = localStorage.getItem("access_token") 
+    if (access_token) {
+      localStorage.setItem('access_token', access_token);
+    } else {
+      navigate("/login")
     }
   }, []);
 
