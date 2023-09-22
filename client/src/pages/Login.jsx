@@ -7,7 +7,7 @@ export default function Login() {
     <div className='flex justify-center'>
       <div>
         <h1>Login Page</h1>
-        <a href={login_uri} onClick={setAccessToken()}>Login</a>
+        <a href={login_uri} onClick={setAccessToken}>Login</a>
       </div>
     </div>
   );

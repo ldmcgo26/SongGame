@@ -4,6 +4,8 @@ import authRouter from "./routes/auth.js";
 import callbackRouter from "./routes/callback.js";
 import dotenv from "dotenv";
 import session from "express-session"
+// import cron from "node-cron"
+// import { refreshAccessToken } from "./routes/callback.js";
 
 dotenv.config();
 
@@ -16,18 +18,6 @@ app.use(session({
 }));
 
 app.use(cors());
-
-app.get('/get-access-token', (req, res) => {
-  // Check if there's a valid session and retrieve the access token
-  const access_token = req.session.access_token;
-
-  if (!access_token) {
-    return res.status(401).json({ message: 'Access token not found' });
-  }
-
-  // Send the access token to the frontend
-  res.json({ access_token: access_token });
-})
 
 app.use("/auth", authRouter);
 app.use("/callback", callbackRouter);
