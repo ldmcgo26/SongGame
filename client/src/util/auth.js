@@ -1,7 +1,7 @@
 import axios from "axios"
 
-export const setAccessToken = () => {
-  axios.get("http://localhost:3000/callback/token")
+export const setAccessToken = async () => {
+  await axios.get("http://localhost:3000/callback/token")
     .then((res) => {
       localStorage.setItem("access_token", res.data.access_token)
       localStorage.setItem('access_token_timestamp', Date.now())
@@ -11,23 +11,27 @@ export const setAccessToken = () => {
     })
 }
 
-const refreshAccessToken = () => {
-  axios.get("http://localhost:3000/callback/refresh-token")
+const refreshAccessToken = async () => {
+  await axios.get("http://localhost:3000/callback/refresh-token")
     .then((res) => {
       localStorage.setItem("access_token", res.data.access_token)
       localStorage.setItem('access_token_timestamp', Date.now())
     })
+    .catch((error) => {
+      console.error(error, "Error storing access token")
+    })
 }
 
 export const getAccessToken = () => {
-  const token = localStorage.getItem("access_token")
+  let token = localStorage.getItem("access_token")
+  const timestamp = localStorage.getItem("access_token_timestamp")
 
-  if (Date.now() - getTokenTimestamp() > 3600 * 1000) {
+  if (Date.now() - timestamp > 3600 * 1000) {
     console.warn('Access token has expired, refreshing...');
     refreshAccessToken();
     token = localStorage.getItem("access_token")
   }
-  
+
   return token
 }
 

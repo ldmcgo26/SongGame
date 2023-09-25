@@ -1,8 +1,10 @@
 import axios from "axios"
+import { getAccessToken } from "./auth";
 
-const access_token = localStorage.getItem("access_token")
+const access_token = getAccessToken()
 
 export const playSong = () => {
+    console.log(access_token)
     const playEndpoint = "https://api.spotify.com/v1/me/player/play";
     const trackUri = "spotify:track:7GhIk7Il098yCjg4BQjzvb"; 
 
