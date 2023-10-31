@@ -22,21 +22,25 @@ const refreshAccessToken = async () => {
     })
 }
 
-export const getAccessToken = () => {
+export const getAccessToken = async () => {
   let token = localStorage.getItem("access_token")
   const timestamp = localStorage.getItem("access_token_timestamp")
 
-  if (Date.now() - timestamp > 3600 * 1000) {
+  if (!token) {
+    await setAccessToken()
+    token = localStorage.getItem("access_token")
+  } 
+  else if (Date.now() - timestamp > 3600 * 1000) {
     console.warn('Access token has expired, refreshing...');
     refreshAccessToken();
     token = localStorage.getItem("access_token")
   }
-
   return token
 }
 
-export const logout = () => {
+export const logout = async () => {
   localStorage.removeItem('access_token_timestamp');
   localStorage.removeItem('access_token');
-  location.reload();
+  location.reload()
+  location.replace("http://localhost:5173/login")
 }
