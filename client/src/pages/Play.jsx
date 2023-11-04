@@ -1,12 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTopGenres } from "../util/spotify";
 
 export default function Play() {
     const navigate = useNavigate();
-    const artists = getTopGenres();
-    const [checked, setChecked] = useState(new Array(artists.length))
-    console.log(artists)
+    const [artists, setArtists] = useState(null)
+    const [checked, setChecked] = useState([])
+
+    const handleCheck = (index) => {
+        const newChecked = checked?.map((item, i) => i === index ? !item : item)
+        setChecked(newChecked)
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await getTopGenres();
+            setArtists(response.items);
+            setChecked(new Array(response.items.length).fill(false));
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
 
     const home = () => navigate("/")
 
@@ -20,6 +39,13 @@ export default function Play() {
                     Home
                 </button>
             </div>
+                <div className={`grid grid-cols-${artists?.length} gap-4`}>
+                    {artists?.map((item, i) => (
+                        <button key={i} className={checked?.[i] ? "bg-blue-700" : "bg-blue-500"} onClick={() => handleCheck(i)}>
+                            {item.genres[0]}
+                        </button>
+                    ))}
+                </div>
         </div>
     );
 }
