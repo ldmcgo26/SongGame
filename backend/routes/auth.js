@@ -10,7 +10,7 @@ const redirectUri = process.env.REDIRECT_URI;
 
 router.get("/", (req, res) => {
   const state = (Math.random().toString(36) + "00000000000000000").slice(2, 18);
-  const scope = "user-read-private user-read-email user-modify-playback-state";
+  const scope = "user-read-private user-read-email user-modify-playback-state user-top-read";
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
