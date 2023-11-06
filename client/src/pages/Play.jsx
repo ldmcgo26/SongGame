@@ -4,7 +4,7 @@ import { getTopGenres } from '../util/spotify'
 
 export default function Play() {
     const navigate = useNavigate()
-    const [artists, setArtists] = useState(null)
+    const [genres, setGenres] = useState(null)
     const [checked, setChecked] = useState([])
 
     const handleCheck = (index) => {
@@ -13,13 +13,18 @@ export default function Play() {
         )
         setChecked(newChecked)
     }
+    
+    const handleSubmit = () => {
+        
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getTopGenres()
-                setArtists(response.items)
-                setChecked(new Array(response.items.length).fill(false))
+                const items = [...new Set(response.items.flatMap((i)=>i.genres))]
+                setGenres(items)
+                setChecked(new Array(items.length).fill(false))
             } catch (error) {
                 console.error('Error:', error)
             }
@@ -42,15 +47,21 @@ export default function Play() {
                 >
                     Home
                 </button>
+                <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full"
+                    onClick={handleSubmit}
+                >
+                    Continue
+                </button>
             </div>
-            <div className={`grid grid-cols-${artists?.length} gap-4`}>
-                {artists?.map((item, i) => (
+            <div className=''>
+                {genres?.map((item, i) => (
                     <button
                         key={i}
-                        className={checked?.[i] ? 'bg-blue-700' : 'bg-blue-500'}
+                        className={`flex ${checked[i] ? 'bg-blue-500 text-white' : ''}`}
                         onClick={() => handleCheck(i)}
                     >
-                        {item.genres[0]}
+                        {item.split(" ").map((n)=>n[0].toUpperCase()+n.slice(1)).join(" ")}
                     </button>
                 ))}
             </div>
