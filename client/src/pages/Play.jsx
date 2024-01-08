@@ -58,7 +58,7 @@ export default function Play() {
                 {genres?.map((item, i) => (
                     <button
                         key={i}
-                        className={`flex ${checked[i] ? 'bg-blue-500 text-white' : ''}`}
+                        className={`flex ${checked[i] ? 'bg-blue-500 text-white' : 'bg-blue-700'}`}
                         onClick={() => handleCheck(i)}
                     >
                         {item.split(" ").map((n)=>n[0].toUpperCase()+n.slice(1)).join(" ")}
