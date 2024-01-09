@@ -27,11 +27,9 @@ export const getTopGenres = async () => {
     const endpoint = 'https://api.spotify.com/v1/me/top/artists'
 
     try {
-        const response = await axios
-            .get(endpoint, { headers })
+        const response = await axios.get(endpoint, { headers })
         console.log('Genres:', response.data)
         return response.data // Return the fetched data
-            
     } catch (error) {
         console.error('Error getting genres:', error)
         throw error // Re-throw the error if needed
