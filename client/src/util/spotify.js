@@ -35,3 +35,25 @@ export const getTopGenres = async () => {
         throw error // Re-throw the error if needed
     }
 }
+
+export const generatePlaylist = async (artists, genres) => {
+    const endpoint = 'https://api.spotify.com/v1/recommendations'
+    const requestData = {
+        limit: 100,
+        seed_artists: artists,
+        seed_genres: genres,
+        market: 'US',
+    }
+
+    try {
+        const response = await axios.get(endpoint, {
+            params: requestData,
+            headers,
+        })
+        console.log(response)
+        return response.data // Return the fetched data
+    } catch (error) {
+        console.error('Error generating playlist:', error)
+        throw error // Re-throw the error if needed
+    }
+}

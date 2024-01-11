@@ -27,7 +27,7 @@ export const getAccessToken = async () => {
             })
     } else if (Date.now() - timestamp > 3600 * 1000) {
         console.warn('Access token has expired, refreshing...')
-        refreshAccessToken()
+        await refreshAccessToken()
     }
     return token
 }
@@ -35,5 +35,5 @@ export const getAccessToken = async () => {
 export const logout = async () => {
     token = undefined
     timestamp = undefined
-    location.replace('http://localhost:5173/login')
+    location.replace('http://localhost:5173/')
 }

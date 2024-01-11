@@ -1,9 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { generatePlaylist } from '../util/spotify'
 
-export default function Play(genres) {
-    const navigate = useNavigate()
-
-    const home = () => navigate('/')
+export default function Play(props) {
+    const [queue, setQueue] = useState(
+        generatePlaylist(props.artists, props.genres)
+    )
 
     return <div></div>
 }
