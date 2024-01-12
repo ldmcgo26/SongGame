@@ -50,10 +50,28 @@ export const generatePlaylist = async (artists, genres) => {
             params: requestData,
             headers,
         })
-        console.log(response)
+        console.log(response.data)
         return response.data // Return the fetched data
     } catch (error) {
         console.error('Error generating playlist:', error)
+        throw error // Re-throw the error if needed
+    }
+}
+
+export const setRepeat = async () => {
+    const endpoint = "https://api.spotify.com/v1/me/player/repeat"
+    const requestData = {
+        "state": "track"
+    }
+
+    try {
+        const response = await axios.put(endpoint, null, {
+            params: requestData,
+            headers: headers,
+        });
+        return response.data // Return the fetched data
+    } catch (error) {
+        console.error('Error setting repeat:', error)
         throw error // Re-throw the error if needed
     }
 }

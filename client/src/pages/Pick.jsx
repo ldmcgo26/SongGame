@@ -122,6 +122,8 @@ export default function Pick() {
                             type="number"
                             value={players}
                             onChange={(e) => setPlayers(e.target.value)}
+                            max={8}
+                            min={0}
                         />
                     </div>
                     <p className="flex font-mono justify-center bg-slate-300 text-2xl text-slate-800 px-4 py-4 rounded-full m-2">
@@ -176,7 +178,7 @@ export default function Pick() {
             )}
             {showAlert ? (
                 <div>
-                    <Alert message="Please select 5 or fewer combined Artists/Genres, but at least one of each"></Alert>
+                    <Alert message="Select 5 or fewer artists and genres, but at least one of each"></Alert>
                 </div>
             ) : (
                 <div></div>
