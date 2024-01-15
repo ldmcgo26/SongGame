@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react'
 import { generatePlaylist, setRepeat, playSong } from '../util/spotify'
 
 export default function Play(props) {
-    const [queue, setQueue] = useState(
-        // [{uri: "spotify:track:7lEptt4wbM0yJTvSG5EBof"}]
-    )
+    const [queue, setQueue] = useState()
 
     useEffect(() => {
         const fetch = async () => {
@@ -22,13 +20,18 @@ export default function Play(props) {
     const [points, setPoints] = useState(Array(parseInt(props.players)).fill(0))
 
     const handleClick = () => {
-        const fetchPlaySong = async () => await playSong(queue?.[0]?.uri)
-        fetchPlaySong()
-        setRepeat()
-        // setQueue()
-    }
-
-    console.log(queue)
+        const fetchPlaySong = async () => {
+          try {
+            await playSong(queue?.[0]?.uri);
+            setRepeat();
+            setQueue(queue?.slice(1))
+          } catch (error) {
+            console.error("Error playing song:", error);
+          }
+        };
+    
+        fetchPlaySong();
+    };
 
     return (
         <div className="">
