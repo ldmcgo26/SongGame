@@ -7,9 +7,9 @@ const headers = {
     Authorization: `Bearer ${access_token}`,
 }
 
-export const playSong = async () => {
+export const playSong = async (uri) => {
     const playEndpoint = 'https://api.spotify.com/v1/me/player/play'
-    const trackUri = 'spotify:track:7GhIk7Il098yCjg4BQjzvb'
+    const trackUri = uri
     const requestData = {
         uris: [trackUri],
     }
@@ -50,8 +50,8 @@ export const generatePlaylist = async (artists, genres) => {
             params: requestData,
             headers,
         })
-        console.log(response.data)
-        return response.data // Return the fetched data
+        console.log(response.data.tracks)
+        return response.data.tracks // Return the fetched data
     } catch (error) {
         console.error('Error generating playlist:', error)
         throw error // Re-throw the error if needed
