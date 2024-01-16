@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAccessToken } from './auth'
 
-const access_token = await getAccessToken()
+const access_token = getAccessToken()
 
 const headers = {
     Authorization: `Bearer ${access_token}`,

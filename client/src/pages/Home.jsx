@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { getAccessToken, logout } from '../util/auth'
 import Login from './Login'
 
-const access_token = await getAccessToken()
+const access_token = getAccessToken()
 
 export default function Home() {
     const navigate = useNavigate()
