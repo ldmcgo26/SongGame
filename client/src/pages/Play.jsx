@@ -7,36 +7,39 @@ export default function Play(props) {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const playlist = await generatePlaylist(props.artists, props.genres);
-                setQueue(playlist);
+                const playlist = await generatePlaylist(
+                    props.artists,
+                    props.genres
+                )
+                setQueue(playlist)
             } catch (error) {
-                console.error("Error fetching playlist:", error);
+                console.error('Error fetching playlist:', error)
             }
-        };
+        }
 
-        fetch();
-    }, [props.artists, props.genres]);
+        fetch()
+    }, [props.artists, props.genres])
 
     const [points, setPoints] = useState(Array(parseInt(props.players)).fill(0))
 
     const handleClick = () => {
         const fetchPlaySong = async () => {
-          try {
-            await playSong(queue?.[0]?.uri);
-            setRepeat();
-            setQueue(queue?.slice(1))
-          } catch (error) {
-            console.error("Error playing song:", error);
-          }
-        };
-    
-        fetchPlaySong();
-    };
+            try {
+                await playSong(queue?.[0]?.uri)
+                setRepeat()
+                setQueue(queue?.slice(1))
+            } catch (error) {
+                console.error('Error playing song:', error)
+            }
+        }
+
+        fetchPlaySong()
+    }
 
     return (
         <div className="">
             {points?.map((value, i) => (
-                <div className='flex justify-center'>
+                <div key={i} className="flex justify-center">
                     <p className="flex font-mono justify-center bg-slate-300 text-2xl text-slate-800 p-4 rounded-full m-2">
                         Player {i + 1}
                     </p>
@@ -53,13 +56,14 @@ export default function Play(props) {
                     />
                 </div>
             ))}
-            <div className='flex justify-center'>
-            <button
-                onClick={handleClick}
-                className="font-mono bg-slate-300 text-2xl text-slate-800 p-4 rounded-full m-2"
-            >
-                Play Song
-            </button>
+            <div className="flex justify-center">
+                <button
+                    key="playsong"
+                    onClick={handleClick}
+                    className="font-mono bg-slate-300 text-2xl text-slate-800 p-4 rounded-full m-2"
+                >
+                    Play Song
+                </button>
             </div>
         </div>
     )
