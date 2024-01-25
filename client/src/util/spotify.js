@@ -17,7 +17,7 @@ const createAuthenticatedRequest = async (url, method, data) => {
   }
 };
 
-export const playSong = (uri) => {
+export const playSong = async (uri) => {
   const playEndpoint = 'https://api.spotify.com/v1/me/player/play';
   const trackUri = uri;
   const requestData = {
@@ -44,7 +44,23 @@ export const generatePlaylist = async (artists, genres) => {
     market: 'US',
   };
 
-  return createAuthenticatedRequest(endpoint, 'get', { params: requestData });
+  const access_token = await getAccessToken();
+
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+    try {
+        const response = await axios.get(endpoint, {
+            params: requestData,
+            headers,
+        })
+        console.log(response.data.tracks)
+        return response.data.tracks // Return the fetched data
+    } catch (error) {
+        console.error('Error generating playlist:', error)
+        throw error // Re-throw the error if needed
+    }
 };
 
 export const setRepeat = async () => {
