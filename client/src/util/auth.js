@@ -39,5 +39,7 @@ export const getAccessToken = async () => {
 export const logout = async () => {
     token = undefined
     timestamp = undefined
-    location.replace('https://main.d1zgindv5gtck4.amplifyapp.com/')
+    location.replace(
+        'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/auth'
+    )
 }
