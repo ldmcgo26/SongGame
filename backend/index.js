@@ -1,14 +1,14 @@
-import express from 'express';
-import cors from 'cors';
-import authRouter from './routes/auth.js';
-import callbackRouter from './routes/callback.js';
-import dotenv from 'dotenv';
-import session from 'express-session';
-import serverless from 'serverless-http';
+import express from 'express'
+import cors from 'cors'
+import authRouter from './routes/auth.js'
+import callbackRouter from './routes/callback.js'
+import dotenv from 'dotenv'
+import session from 'express-session'
+import serverless from 'serverless-http'
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
+const app = express()
 
 app.use(
     session({
@@ -16,12 +16,12 @@ app.use(
         resave: false,
         saveUninitialized: true,
     })
-);
+)
 
-app.use(cors());
+app.use(cors())
 
-app.use('/auth', authRouter);
-app.use('/callback', callbackRouter);
+app.use('/auth', authRouter)
+app.use('/callback', callbackRouter)
 
 // Export your app for serverless-http
-export const handler = serverless(app);
+export const handler = serverless(app)

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAccessToken } from './auth'
 
-const access_token = getAccessToken()
+const access_token = await getAccessToken()
 
 const headers = {
     Authorization: `Bearer ${access_token}`,
@@ -24,7 +24,6 @@ export const playSong = async (uri) => {
 }
 
 export const getTopGenres = async () => {
-    console.log(access_token)
     const endpoint = 'https://api.spotify.com/v1/me/top/artists'
 
     try {

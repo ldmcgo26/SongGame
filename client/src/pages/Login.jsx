@@ -1,4 +1,5 @@
-const login_uri = 'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/auth'
+const login_uri =
+    'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/auth'
 
 export default function Login() {
     return (
