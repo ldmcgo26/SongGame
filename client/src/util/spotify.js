@@ -24,6 +24,7 @@ export const playSong = async (uri) => {
 }
 
 export const getTopGenres = async () => {
+    console.log(access_token)
     const endpoint = 'https://api.spotify.com/v1/me/top/artists'
 
     try {
