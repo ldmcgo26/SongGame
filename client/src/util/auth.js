@@ -5,7 +5,7 @@ let timestamp = undefined
 
 const refreshAccessToken = async () => {
     await axios
-        .get('http://localhost:3000/callback/refresh-token')
+        .get('https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/callback/refresh-token')
         .then((res) => {
             token = res.data.access_token
         })
@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
 export const getAccessToken = async () => {
     if (!token) {
         await axios
-            .get('http://localhost:3000/callback/token')
+            .get('https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/token')
             .then((res) => {
                 token = res.data.access_token
                 timestamp = Date.now()
@@ -35,5 +35,5 @@ export const getAccessToken = async () => {
 export const logout = async () => {
     token = undefined
     timestamp = undefined
-    location.replace('http://localhost:5173/')
+    location.replace('https://main.d1zgindv5gtck4.amplifyapp.com/')
 }
