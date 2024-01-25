@@ -1,7 +1,14 @@
 import axios from 'axios'
 import { getAccessToken } from './auth'
 
-const access_token = await getAccessToken()
+let access_token;
+
+getAccessToken().then(token => {
+  access_token = token;
+
+}).catch(error => {
+  console.error('Error fetching access token:', error);
+});
 
 const headers = {
     Authorization: `Bearer ${access_token}`,
