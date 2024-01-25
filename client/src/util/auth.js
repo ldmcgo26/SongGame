@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
 export const getAccessToken = async () => {
     if (!token) {
         await axios
-            .get('https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/token')
+            .get('https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/callback/token')
             .then((res) => {
                 token = res.data.access_token
                 timestamp = Date.now()
