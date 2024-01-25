@@ -4,6 +4,7 @@ import authRouter from './routes/auth.js';
 import callbackRouter from './routes/callback.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import serverless from 'serverless-http';
 
 dotenv.config();
 
