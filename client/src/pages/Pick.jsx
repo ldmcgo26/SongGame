@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getTopGenres } from '../util/spotify'
 import Play from './Play'
+import Header from '../components/Header'
 
 const Alert = (props) => (
-    <div className="z-50 fixed bottom-4 font-mono left-4 w-1/5 h-8vh bg-slate-400 text-slate-800 p-4 rounded-lg">
+    <div className="z-50 fixed bottom-4  left-4 w-1/5 h-8vh bg-slate-400 text-slate-800 p-4 rounded-lg">
         {props.message}
     </div>
 )
@@ -94,95 +95,100 @@ export default function Pick() {
 
     return (
         <div>
-            <p className="flex font-mono justify-center bg-orange-400 text-6xl text-slate-800 p-4 rounded-full mx-2 mb-4">
-                Song Game
-            </p>
-            {!submitted ? (
-                <div>
-                    <div className="flex font-mono justify-center flex-col mx-2 gap-2">
-                        <button
-                            className="bg-orange-300 hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full"
-                            onClick={home}
-                        >
-                            Home
-                        </button>
-                        <button
-                            className="bg-orange-300 hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full"
-                            onClick={handleSubmit}
-                        >
-                            Continue
-                        </button>
-                    </div>
-                    <p className="flex font-mono justify-center bg-slate-300 text-2xl text-slate-800 p-4 rounded-full m-2">
-                        Pick Number of Players
-                    </p>
-                    <div className="flex justify-center">
-                        <input
-                            className="border-slate-800 border-2 rounded-lg text-slate-800 p-4 m-2"
-                            type="number"
-                            value={players}
-                            onChange={(e) => setPlayers(e.target.value)}
-                            max={8}
-                            min={0}
-                        />
-                    </div>
-                    <p className="flex font-mono justify-center bg-slate-300 text-2xl text-slate-800 px-4 py-4 rounded-full m-2">
-                        Pick Artists
-                    </p>
-                    <div className="grid grid-cols-2 mx-1">
-                        {artists?.map((item, i) => (
-                            <button
-                                key={i}
-                                className={`flex justify-center py-1 m-1 rounded-full font-mono ${
-                                    checkedArtists[i]
-                                        ? 'bg-blue-500 text-white'
-                                        : 'text-slate-800 bg-orange-200'
-                                }`}
-                                onClick={() => handleCheckArtists(i)}
-                            >
-                                {item[0]
-                                    .split(' ')
-                                    .map((n) => n[0].toUpperCase() + n.slice(1))
-                                    .join(' ')}
-                            </button>
-                        ))}
-                    </div>
-                    <p className="flex font-mono justify-center bg-slate-300 text-2xl text-slate-800 px-4 py-4 rounded-full m-2">
-                        Pick Genres
-                    </p>
-                    <div className="grid grid-cols-3 mx-1">
-                        {genres?.map((item, i) => (
-                            <button
-                                key={i}
-                                className={`flex justify-center py-1 m-1 rounded-full font-mono ${
-                                    checkedGenres[i]
-                                        ? 'bg-blue-500 text-white'
-                                        : 'text-slate-800 bg-orange-200'
-                                }`}
-                                onClick={() => handleCheckGenres(i)}
-                            >
-                                {item
-                                    .split(' ')
-                                    .map((n) => n[0].toUpperCase() + n.slice(1))
-                                    .join(' ')}
-                            </button>
-                        ))}
-                    </div>
+            <Header></Header>
+            <div className="flex font-mono flex-col items-center">
+                <div className="w-1/2">
+                    {!submitted ? (
+                        <div>
+                            <p className="flex justify-center bg-slate-200 border-slate-800 border-2 text-2xl text-slate-800 p-4 rounded-full m-2">
+                                Pick Number of Players
+                            </p>
+                            <div className="flex justify-center">
+                                <input
+                                    className="border-slate-800 border-2 rounded-lg text-slate-800 p-4 m-2"
+                                    type="number"
+                                    value={players}
+                                    onChange={(e) => setPlayers(e.target.value)}
+                                    max={8}
+                                    min={0}
+                                />
+                            </div>
+                            <p className="flex justify-center bg-slate-200 text-2xl text-slate-800 border-slate-800 border-2 px-4 py-4 rounded-full m-2">
+                                Pick Artists
+                            </p>
+                            <div className="grid grid-cols-2 mx-1">
+                                {artists?.map((item, i) => (
+                                    <button
+                                        key={i}
+                                        className={`flex justify-center py-1 m-1 rounded-full shadow-lg ${
+                                            checkedArtists[i]
+                                                ? 'text-slate-800 bg-orange-500'
+                                                : 'text-slate-800 bg-orange-200'
+                                        }`}
+                                        onClick={() => handleCheckArtists(i)}
+                                    >
+                                        {item[0]
+                                            .split(' ')
+                                            .map(
+                                                (n) =>
+                                                    n[0].toUpperCase() +
+                                                    n.slice(1)
+                                            )
+                                            .join(' ')}
+                                    </button>
+                                ))}
+                            </div>
+                            <p className="flex justify-center bg-slate-200 border-slate-800 border-2 text-2xl text-slate-800 px-4 py-4 rounded-full m-2">
+                                Pick Genres
+                            </p>
+                            <div className="grid grid-cols-3 mx-1">
+                                {genres?.map((item, i) => (
+                                    <button
+                                        key={i}
+                                        className={`flex justify-center py-1 m-1 rounded-full shadow-lg ${
+                                            checkedGenres[i]
+                                                ? 'text-slate-800 bg-orange-500'
+                                                : 'text-slate-800 bg-orange-200'
+                                        }`}
+                                        onClick={() => handleCheckGenres(i)}
+                                    >
+                                        {item
+                                            .split(' ')
+                                            .map(
+                                                (n) =>
+                                                    n[0].toUpperCase() +
+                                                    n.slice(1)
+                                            )
+                                            .join(' ')}
+                                    </button>
+                                ))}
+                            </div>
+                            <hr className="border-1 border-slate-800 my-4"></hr>
+                            <div className="flex justify-center flex-col mx-2 mt-4 mb-20">
+                                <button
+                                    className="bg-orange-200 border-2 border-slate-800 shadow-lg hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full"
+                                    onClick={handleSubmit}
+                                >
+                                    Continue
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <Play
+                            artists={submitArtist.join()}
+                            genres={submitGenre.join()}
+                            players={players}
+                        ></Play>
+                    )}
+                    {showAlert ? (
+                        <div>
+                            <Alert message="Select 5 or fewer artists and genres, but at least one of each"></Alert>
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
                 </div>
-            ) : (
-                <Play
-                    artists={submitArtist.join()}
-                    genres={submitGenre.join()}
-                    players={players}
-                ></Play>
-            )}
-            {showAlert ? (
-                <div>
-                    <Alert message="Select 5 or fewer artists and genres, but at least one of each"></Alert>
-                </div>
-            ) : (
-                <div></div>
-            )}
+            </div>
         </div>
     )
 }
