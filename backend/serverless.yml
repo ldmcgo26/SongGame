@@ -1,4 +1,4 @@
-service: SongGame
+service: SongGame1
 
 provider:
   name: aws
