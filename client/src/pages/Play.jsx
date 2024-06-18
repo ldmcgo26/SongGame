@@ -3,7 +3,7 @@ import { generatePlaylist, setRepeat, playSong } from '../util/spotify'
 
 export default function Play(props) {
     const [queue, setQueue] = useState()
-    const [curSong, setCurSong] = useState('Click to reveal song')
+    const [curSong, setCurSong] = useState('Play the first song!')
     const [hidden, setHidden] = useState(true)
 
     useEffect(() => {
@@ -33,6 +33,7 @@ export default function Play(props) {
                 )
                 setRepeat()
                 setQueue(queue?.slice(1))
+                setHidden(false) // This ensures the song is revealed after playing
             } catch (error) {
                 console.error('Error playing song:', error)
             }
@@ -89,12 +90,10 @@ export default function Play(props) {
                 </button>
             </div>
             <button
-                className="border-slate-800 border-2 w-auto min-w-32 min-h-16 h-auto rounded-sm flex justify-center items-center p-2"
+                className={`border-slate-800 border-2 w-auto min-w-32 min-h-16 h-auto rounded-sm flex justify-center items-center p-2 ${!hidden ? 'bg-orange-200 hover:bg-orange-500' : ''}`}
                 onClick={() => setHidden(!hidden)}
             >
-                {typeof curSong != 'undefined' && hidden
-                    ? curSong
-                    : 'Click to reveal song'}
+                {!hidden ? 'Click to reveal song' : curSong}
             </button>
         </div>
     )
