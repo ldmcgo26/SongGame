@@ -15,6 +15,7 @@ app.use(
         secret: (Math.random().toString(36) + '00000000000000000').slice(2, 18),
         resave: false,
         saveUninitialized: true,
+        cookie: { secure: false }, // Set to true if using HTTPS
     })
 )
 

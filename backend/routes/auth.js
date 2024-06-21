@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
         2,
         18
     )
+    req.session.state = state // Store state in session
     const scope =
         'user-read-private user-read-email user-modify-playback-state user-top-read'
 

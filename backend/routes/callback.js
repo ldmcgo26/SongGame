@@ -2,7 +2,6 @@ import express from 'express'
 import querystring from 'querystring'
 import axios from 'axios'
 import dotenv from 'dotenv'
-import { Console } from 'console'
 
 dotenv.config()
 
@@ -13,21 +12,16 @@ const frontend_uri = process.env.FRONTEND_URI
 
 const router = express.Router()
 
-let token = undefined
-let refreshToken = undefined
-
 router.get('/', async (req, res) => {
     const code = req.query.code || null
     const state = req.query.state || null
 
-    if (state === null) {
-        res.redirect(
-            '/#' +
-                querystring.stringify({
-                    error: 'state_mismatch',
-                })
-        )
+    if (state === null || state !== req.session.state) {
+        // Validate state
+        res.redirect('/#' + querystring.stringify({ error: 'state_mismatch' }))
     } else {
+        req.session.state = null // Clear state in session
+
         const authOptions = {
             url: 'https://accounts.spotify.com/api/token',
             method: 'POST',
@@ -39,73 +33,70 @@ router.get('/', async (req, res) => {
             headers: {
                 Authorization:
                     'Basic ' +
-                    new Buffer.from(clientId + ':' + clientSecret).toString(
+                    Buffer.from(clientId + ':' + clientSecret).toString(
                         'base64'
                     ),
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
         }
 
-        await axios
-            .request(authOptions)
-            .then((response) => {
-                const { access_token, refresh_token, expires_in, token_type } =
-                    response.data
+        try {
+            const response = await axios(authOptions)
+            const { access_token, refresh_token } = response.data
 
-                console.log('Access Token:', access_token)
-                console.log('Refresh Token:', refresh_token)
-                console.log('Token Type:', token_type)
-                console.log('Expires In:', expires_in)
+            req.session.access_token = access_token // Store tokens in session
+            req.session.refresh_token = refresh_token
 
-                token = access_token
-                refreshToken = refresh_token
-
-                res.redirect(frontend_uri)
-            })
-            .catch((error) => {
-                console.error(
-                    'Error exchanging authorization code for access token:',
-                    error
-                )
-            })
+            res.redirect(frontend_uri)
+        } catch (error) {
+            console.error(
+                'Error exchanging authorization code for access token:',
+                error
+            )
+            res.redirect(
+                '/#' + querystring.stringify({ error: 'invalid_token' })
+            )
+        }
     }
 })
 
 router.get('/token', (req, res) => {
+    const token = req.session.access_token
     if (!token) {
         return res.status(401).json({ message: 'Access token not found' })
     }
-    // Send the access token to the frontend
     res.json({ access_token: token })
 })
 
 router.get('/refresh-token', async (req, res) => {
-    console.log(refreshToken)
+    const refreshToken = req.session.refresh_token
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token not found' })
+    }
+
     const authOptions = {
         url: 'https://accounts.spotify.com/api/token',
+        method: 'POST',
+        data: querystring.stringify({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+        }),
         headers: {
             Authorization:
                 'Basic ' +
-                new Buffer.from(clientId + ':' + clientSecret).toString(
-                    'base64'
-                ),
+                Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        form: {
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-        },
-        json: true,
     }
 
-    await axios
-        .post(authOptions)
-        .then((response) => {
-            token = response.data.access_token
-            res.json({ access_token: token })
-        })
-        .catch((error) => {
-            console.error('Error refreshing access token', error)
-        })
+    try {
+        const response = await axios(authOptions)
+        req.session.access_token = response.data.access_token
+        res.json({ access_token: response.data.access_token })
+    } catch (error) {
+        console.error('Error refreshing access token', error)
+        res.status(500).json({ error: 'Failed to refresh access token' })
+    }
 })
 
 export default router

@@ -90,7 +90,9 @@ export default function Play(props) {
                 </button>
             </div>
             <button
-                className={`border-slate-800 border-2 w-auto min-w-32 min-h-16 h-auto rounded-sm flex justify-center items-center p-2 ${!hidden ? 'bg-orange-200 hover:bg-orange-500' : ''}`}
+                className={`border-slate-800 border-2 w-auto min-w-32 min-h-16 h-auto rounded-sm flex justify-center items-center p-2 ${
+                    !hidden ? 'bg-orange-200 hover:bg-orange-500' : ''
+                }`}
                 onClick={() => setHidden(!hidden)}
             >
                 {!hidden ? 'Click to reveal song' : curSong}
