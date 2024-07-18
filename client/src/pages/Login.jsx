@@ -1,5 +1,5 @@
 const login_uri =
-    'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/auth'
+    'https://err9y13l2i.execute-api.us-east-1.amazonaws.com/dev/auth'
 
 export default function Login() {
     return (

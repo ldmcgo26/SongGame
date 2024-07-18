@@ -41,7 +41,6 @@ export default function Play(props) {
 
         fetchPlaySong()
     }
-    console.log(queue)
 
     return (
         <div className="flex flex-col items-center">

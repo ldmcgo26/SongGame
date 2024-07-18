@@ -2,8 +2,8 @@ service: SongGame1
 
 provider:
   name: aws
-  runtime: nodejs14.x
-  region: us-east-1  # Set your desired AWS region
+  runtime: nodejs20.x  # Updated runtime
+  region: us-east-1
 
 functions:
   app:
@@ -11,9 +11,9 @@ functions:
     events:
       - http:
           path: /
-          method: ANY
+          method: any
           cors: true
       - http:
           path: /{proxy+}
-          method: ANY
+          method: any
           cors: true

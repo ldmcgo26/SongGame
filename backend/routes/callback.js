@@ -16,12 +16,10 @@ router.get('/', async (req, res) => {
     const code = req.query.code || null
     const state = req.query.state || null
 
-    if (state === null || state !== req.session.state) {
+    if (state === null || state !== req.query.state) {
         // Validate state
         res.redirect('/#' + querystring.stringify({ error: 'state_mismatch' }))
     } else {
-        req.session.state = null // Clear state in session
-
         const authOptions = {
             url: 'https://accounts.spotify.com/api/token',
             method: 'POST',
@@ -38,16 +36,23 @@ router.get('/', async (req, res) => {
                     ),
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            json: true
         }
 
         try {
             const response = await axios(authOptions)
             const { access_token, refresh_token } = response.data
 
-            req.session.access_token = access_token // Store tokens in session
-            req.session.refresh_token = refresh_token
-
-            res.redirect(frontend_uri)
+            // Redirect to the frontend with the tokens
+            res.redirect(
+                frontend_uri +
+                '#' +
+                querystring.stringify({
+                    access_token: access_token,
+                    refresh_token: refresh_token,
+                    timestamp: Date.now()
+                })
+            )
         } catch (error) {
             console.error(
                 'Error exchanging authorization code for access token:',
@@ -60,16 +65,8 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/token', (req, res) => {
-    const token = req.session.access_token
-    if (!token) {
-        return res.status(401).json({ message: 'Access token not found' })
-    }
-    res.json({ access_token: token })
-})
-
 router.get('/refresh-token', async (req, res) => {
-    const refreshToken = req.session.refresh_token
+    const refreshToken = req.query.refresh_token
     if (!refreshToken) {
         return res.status(401).json({ message: 'Refresh token not found' })
     }
@@ -91,7 +88,6 @@ router.get('/refresh-token', async (req, res) => {
 
     try {
         const response = await axios(authOptions)
-        req.session.access_token = response.data.access_token
         res.json({ access_token: response.data.access_token })
     } catch (error) {
         console.error('Error refreshing access token', error)

@@ -1,45 +1,65 @@
-import axios from 'axios'
+// On successful redirection, extract tokens from the URL
+window.onload = function() {
+    const hash = window.location.hash;
+    const tokenData = {};
 
-let token = undefined
-let timestamp = undefined
+    if (hash) {
+        hash.substring(1).split('&').forEach(item => {
+            const [key, value] = item.split('=');
+            tokenData[key] = value;
+        });
 
-const refreshAccessToken = async () => {
-    await axios
-        .get(
-            'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/callback/refresh-token'
-        )
-        .then((res) => {
-            token = res.data.access_token
-        })
-        .catch((error) => {
-            console.error(error, 'Error refreshing token')
-        })
-}
+        if (tokenData.access_token) {
+            window.localStorage.setItem('access_token', tokenData.access_token);
+        }
+        if (tokenData.refresh_token) {
+            window.localStorage.setItem('refresh_token', tokenData.refresh_token);
+        }
+        if (tokenData.timestamp) {
+            window.localStorage.setItem('timestamp', tokenData.timestamp);
+        }
 
-export const getAccessToken = async () => {
-    if (!token) {
-        await axios
-            .get(
-                'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/callback/token'
-            )
-            .then((res) => {
-                token = res.data.access_token
-                timestamp = Date.now()
-            })
-            .catch((error) => {
-                console.error(error, 'Error getting access token')
-            })
-    } else if (Date.now() - timestamp > 3600 * 1000) {
-        console.warn('Access token has expired, refreshing...')
-        await refreshAccessToken()
+        // Clear the URL hash
+        window.location.hash = '';
     }
-    return token
+};
+
+// Function to get access token
+export async function getAccessToken() {
+    const token = window.localStorage.getItem('access_token');
+    const timestamp = window.localStorage.getItem('timestamp');
+    const expirationDuration = 3600 * 1000; // 1 hour in milliseconds
+
+    if (!token || !timestamp) {
+        return null;
+    }
+
+    const tokenAge = Date.now() - parseInt(timestamp, 10);
+    if (tokenAge > expirationDuration) {
+        // Token has expired, refresh it
+        await refreshAccessToken();
+    }
+
+    return token;
 }
 
-export const logout = async () => {
-    token = undefined
-    timestamp = undefined
-    location.replace(
-        'https://cptm91ekpj.execute-api.us-east-1.amazonaws.com/dev/auth'
-    )
+// Function to refresh access token
+async function refreshAccessToken() {
+    const refreshToken = window.localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+        console.error('Refresh token not found');
+        return;
+    }
+
+    try {
+        const response = await axios.post(
+            'https://err9y13l2i.execute-api.us-east-1.amazonaws.com/dev/callback/refresh-token',
+            { refresh_token: refreshToken }
+        );
+        const newAccessToken = response.data.access_token;
+        // Assuming you want to store the new access token in localStorage
+        window.localStorage.setItem('access_token', newAccessToken);
+    } catch (error) {
+        console.error('Error refreshing access token', error);
+    }
 }
