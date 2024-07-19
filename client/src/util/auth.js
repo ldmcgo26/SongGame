@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // On successful redirection, extract tokens from the URL
 window.onload = function() {
     const hash = window.location.hash;
@@ -40,7 +42,7 @@ export async function getAccessToken() {
         await refreshAccessToken();
     }
 
-    return token;
+    return window.localStorage.getItem('access_token');
 }
 
 // Function to refresh access token
@@ -52,13 +54,14 @@ async function refreshAccessToken() {
     }
 
     try {
-        const response = await axios.post(
+        const response = await axios.get(
             'https://err9y13l2i.execute-api.us-east-1.amazonaws.com/dev/callback/refresh-token',
             { refresh_token: refreshToken }
         );
         const newAccessToken = response.data.access_token;
-        // Assuming you want to store the new access token in localStorage
+        const newRefreshToken = response.data.refresh_token;
         window.localStorage.setItem('access_token', newAccessToken);
+        window.localStorage.setItem('refresh_token', newRefreshToken);
     } catch (error) {
         console.error('Error refreshing access token', error);
     }

@@ -5,12 +5,16 @@ import Login from './Login'
 import Header from '../components/Header'
 
 export default function Home() {
-    const [accessToken, setAccessToken] = useState(getAccessToken())
+    const [accessToken, setAccessToken] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
-        const newToken = getAccessToken()
+        const callGetAccessToken = async () => {
+        const newToken = await getAccessToken()
+        console.log(newToken)
         setAccessToken(newToken)
+        }
+        callGetAccessToken()
     }, [])
 
     const play = () => navigate('/play')
