@@ -100,6 +100,11 @@ export default function Pick() {
                 <div className="w-3/4">
                     {!submitted ? (
                         <div>
+                            <p className="flex justify-center py-2">
+                                Choose up to 5 artists and genres combined!
+                                Click continue to play Song Game with music
+                                similar to your choices!
+                            </p>
                             <p className="flex justify-center bg-slate-200 border-slate-800 border-2 text-2xl text-slate-800 p-4 rounded-full m-2">
                                 Pick Number of Players
                             </p>

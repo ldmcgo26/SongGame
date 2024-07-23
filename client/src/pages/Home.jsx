@@ -35,9 +35,8 @@ export default function Home() {
                             <p className="py-2">
                                 Song Game lets you play a song guessing game
                                 without needing someone to randomize the music
-                                for you! Click play and choose artists and
-                                genres from a personalized list to begin the
-                                game!
+                                for you! Click play to choose artists and genres
+                                from a personalized list to begin the game!
                             </p>
                             <button
                                 className="bg-orange-300 border-2 border-slate-800 shadow-lg hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full mb-2"
