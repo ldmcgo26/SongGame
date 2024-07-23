@@ -10,9 +10,9 @@ export default function Home() {
 
     useEffect(() => {
         const callGetAccessToken = async () => {
-        const newToken = await getAccessToken()
-        console.log(newToken)
-        setAccessToken(newToken)
+            const newToken = await getAccessToken()
+            console.log(newToken)
+            setAccessToken(newToken)
         }
         callGetAccessToken()
     }, [])
@@ -23,7 +23,7 @@ export default function Home() {
         window.localStorage.removeItem('access_token')
         window.localStorage.removeItem('refresh_token')
         setAccessToken(null)
-}
+    }
 
     return (
         <div>
@@ -32,6 +32,13 @@ export default function Home() {
                 <div className="w-1/2">
                     {accessToken ? (
                         <div className="flex justify-center flex-col ">
+                            <p className="py-2">
+                                Song Game lets you play a song guessing game
+                                without needing someone to randomize the music
+                                for you! Click play and choose artists and
+                                genres from a personalized list to begin the
+                                game!
+                            </p>
                             <button
                                 className="bg-orange-300 border-2 border-slate-800 shadow-lg hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full mb-2"
                                 onClick={play}

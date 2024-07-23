@@ -3,9 +3,12 @@ const login_uri =
 
 export default function Login() {
     return (
-        <div className="font-mono flex justify-center flex-col ">
+        <div className="font-mono flex flex-col justify-center">
+            <p className="flex justify-center py-2">
+                Welcome to Song Game! Sign in with Spotify:
+            </p>
             <a
-                className="flex justify-center bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full"
+                className="flex justify-center bg-orange-300 border-2 border-slate-800 shadow-lg hover:bg-orange-500 text-slate-800 px-4 py-2 rounded-full mb-2"
                 href={login_uri}
             >
                 Login

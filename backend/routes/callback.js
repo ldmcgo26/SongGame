@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
                     ),
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            json: true
+            json: true,
         }
 
         try {
@@ -46,12 +46,12 @@ router.get('/', async (req, res) => {
             // Redirect to the frontend with the tokens
             res.redirect(
                 frontend_uri +
-                '#' +
-                querystring.stringify({
-                    access_token: access_token,
-                    refresh_token: refresh_token,
-                    timestamp: Date.now()
-                })
+                    '#' +
+                    querystring.stringify({
+                        access_token: access_token,
+                        refresh_token: refresh_token,
+                        timestamp: Date.now(),
+                    })
             )
         } catch (error) {
             console.error(

@@ -97,7 +97,7 @@ export default function Pick() {
         <div>
             <Header></Header>
             <div className="flex font-mono flex-col items-center">
-                <div className="w-1/2">
+                <div className="w-3/4">
                     {!submitted ? (
                         <div>
                             <p className="flex justify-center bg-slate-200 border-slate-800 border-2 text-2xl text-slate-800 p-4 rounded-full m-2">
