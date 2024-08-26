@@ -25,9 +25,6 @@ The Song Game Web Application is a fun and interactive game where a player can c
 6. Click the "Reveal" button to check your guess.
 7. Keep track of scores among players.
 
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or new features to add.
-
 ## Contact
 For any questions or feedback, please reach out to ldmcgoldrick19@gmail.com
 
